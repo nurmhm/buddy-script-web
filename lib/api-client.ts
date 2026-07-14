@@ -23,7 +23,7 @@ api.interceptors.response.use(
     const original = error.config;
     if (error.response?.status === 401 && !original._retry) {
       original._retry = true;
-      refreshPromise ??= api.post("/api/auth/refresh").then((r) => {
+      refreshPromise ??= api.post("/auth/refresh").then((r) => {
         const token = r.data.data.accessToken;
         setAccessToken(token);
         refreshPromise = null;

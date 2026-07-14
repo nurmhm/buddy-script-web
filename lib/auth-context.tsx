@@ -28,11 +28,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function rehydrate() {
       try {
-        const refreshRes = await api.post("/api/auth/refresh");
+        const refreshRes = await api.post("/auth/refresh");
         const { accessToken } = refreshRes.data.data;
         setAccessToken(accessToken);
 
-        const meRes = await api.get("/api/auth/me");
+        const meRes = await api.get("/auth/me");
         if (isMounted) {
           setUser(meRes.data.data.user);
         }
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      await api.post("/api/auth/logout");
+      await api.post("/auth/logout");
     } finally {
       setAccessToken(null);
       setUser(null);
