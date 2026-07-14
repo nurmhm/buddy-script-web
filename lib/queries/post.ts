@@ -1,5 +1,5 @@
 import { api } from "../api-client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../query-keys";
 
 
@@ -11,9 +11,27 @@ export const getPosts = async () => {
 };
 
 export const useGetPosts = () => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: queryKeys.posts,
-    queryFn: getPosts,
+
+    initialPageParam: 1,
+
+    queryFn: async ({ pageParam }) => {
+      const { data } = await api.get("/posts", {
+        params: {
+          page: pageParam,
+          limit: 10,
+        },
+      });
+
+      return data;
+    },
+
+    getNextPageParam: (lastPage) => {
+      return lastPage.pagination.hasMore
+        ? lastPage.pagination.page + 1
+        : undefined;
+    },
   });
 };
 
