@@ -1,6 +1,5 @@
 "use client"
-import {  useGetPosts } from "@/lib/queries/post";
-import { useState } from "react";
+
 import ThemeButtons from "./ThemeButtons";
 import Navber from "./Navber";
 import Story from "./Story";
@@ -9,8 +8,7 @@ import Posts from "./Posts";
 
 export default function Feed() {
 
-  
-    const { data } = useGetPosts();
+
 
   return (
   	<div className="_layout _layout_main_wrapper">

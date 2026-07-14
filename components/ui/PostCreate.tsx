@@ -56,11 +56,7 @@ const PostCreate = () => {
           image: file,
           imagePreview: preview,
         }));
-        console.log("Image selected:", {
-          fileName: file.name,
-          size: file.size,
-          type: file.type,
-        });
+      
       };
       reader.readAsDataURL(file);
      
