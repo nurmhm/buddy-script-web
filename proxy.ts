@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function proxy(request: NextRequest) {
- const token = request.cookies.get("accessToken")?.value;
+const AUTH_PATHS = ["/login", "/registration"];
 
-  const isAuthPage =
-    request.nextUrl.pathname === "/login" ||
-    request.nextUrl.pathname === "/registration";
+export function proxy(request: NextRequest) {
+  const token = request.cookies.get("refreshToken")?.value;
+  const { pathname } = request.nextUrl;
+  const isAuthPage = AUTH_PATHS.includes(pathname);
 
   if (token && isAuthPage) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -19,5 +19,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/"],
+  matcher: ["/", "/login", "/registration"],
 };

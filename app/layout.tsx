@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { Providers } from "./providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,7 +31,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="/assets/css/responsive.css" />
       </head>
       <body className="min-h-full flex flex-col">
-        {children}
+        <Providers>{children}</Providers>
         <Script
           src="/assets/js/bootstrap.bundle.min.js"
           strategy="afterInteractive"
