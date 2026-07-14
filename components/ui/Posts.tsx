@@ -28,7 +28,7 @@ const Posts = () => {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return <div>Loading posts...</div>;
+    return <div style={{ textAlign: "center", padding: "20px" }}>Loading posts...</div>;
   }
 
   if (isError) {
