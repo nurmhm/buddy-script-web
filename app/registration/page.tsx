@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 
 const Registration = () => {
-	const {
+ const {
   register,
   handleSubmit,
   formState: { errors },
