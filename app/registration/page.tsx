@@ -1,7 +1,7 @@
 "use client";
 import FormError from "@/components/ui/FormError";
 import { useRegister } from "@/lib/queries/auth";
-import { registerSchema,type TRegisterSchema } from "@/lib/schema/auth.schema";
+import { ZRegisterSchema,type TRegisterSchema } from "@/lib/schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -12,7 +12,7 @@ const Registration = () => {
   handleSubmit,
   formState: { errors },
 } = useForm<TRegisterSchema>({
-  resolver: zodResolver(registerSchema),
+  resolver: zodResolver(ZRegisterSchema),
 });
 
 const registerMutation = useRegister();

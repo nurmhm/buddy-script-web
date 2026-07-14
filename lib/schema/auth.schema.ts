@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const registerSchema = z
+export const ZRegisterSchema = z
   .object({
   email: z.email('Invalid email address'),
   password: z
@@ -18,4 +18,10 @@ export const registerSchema = z
     message: "Passwords do not match",
   });
 
-export type TRegisterSchema = z.infer<typeof registerSchema>;
+export const ZLoginSchema = z.object({
+  email: z.email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+});
+
+export type TLoginSchema = z.infer<typeof ZLoginSchema>;
+export type TRegisterSchema = z.infer<typeof ZRegisterSchema>;

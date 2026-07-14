@@ -1,6 +1,26 @@
+"use client";
+import FormError from "@/components/ui/FormError";
+import { useLogin } from "@/lib/queries/auth";
+import { TLoginSchema, ZLoginSchema } from "@/lib/schema/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 
 export default function Login() {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TLoginSchema>({
+		resolver: zodResolver(ZLoginSchema),
+	});
+	const loginMutation = useLogin();
+
+	const onSubmit = (data: TLoginSchema) => {
+		loginMutation.mutate(data);
+	}
+
+
   return (
    <>
    	<section className="_social_login_wrapper _layout_main_wrapper">
@@ -38,18 +58,20 @@ export default function Login() {
 							</button>
 							<div className="_social_login_content_bottom_txt _mar_b40"> <span>Or</span>
 							</div>
-							<form className="_social_login_form">
+							<form  onSubmit={handleSubmit(onSubmit)} className="_social_login_form">
 								<div className="row">
 									<div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div className="_social_login_form_input _mar_b14">
 											<label className="_social_login_label _mar_b8">Email</label>
-											<input type="email" className="form-control _social_login_input"/>
+											<input type="email" className="form-control _social_login_input" {...register("email")}/>
+											<FormError message={errors.email?.message}/>
 										</div>
 									</div>
 									<div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div className="_social_login_form_input _mar_b14">
 											<label className="_social_login_label _mar_b8">Password</label>
-											<input type="password" className="form-control _social_login_input"/>
+											<input type="password" className="form-control _social_login_input" {...register("password")}/>
+											<FormError message={errors.password?.message}/>
 										</div>
 									</div>
 								</div>
@@ -69,7 +91,7 @@ export default function Login() {
 								<div className="row">
 									<div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
 										<div className="_social_login_form_btn _mar_t40 _mar_b60">
-											<button type="button" className="_social_login_form_btn_link _btn1">Login now</button>
+											<button type="submit" className="_social_login_form_btn_link _btn1">Login now</button>
 										</div>
 									</div>
 								</div>
