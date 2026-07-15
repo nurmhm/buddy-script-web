@@ -11,7 +11,7 @@ export type TPost = {
     authorId: string;
     content: string;
     imageUrl: string;
-    visibility: boolean;
+    visibility: string;
     likeCount: number;
     commentCount: number;
     isLiked: boolean;
@@ -110,7 +110,7 @@ const PostCard = ({ post }: PostCardProps) => {
                           addSuffix: true,
                         })}
                       </span>{" "}
-                      <a href="#0">{post?.visibility ? "PUBLIC" : "PRIVATE"}</a>
+                      <a href="#0">{post?.visibility === "PUBLIC" ? "PUBLIC" : "PRIVATE"}</a>
                     </p>
                   </div>
                 </div>

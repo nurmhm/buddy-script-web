@@ -1,8 +1,17 @@
 "use client"
 import { useState } from 'react'
+import { useAuth } from '@/lib/auth-context'
+import { useRouter } from 'next/navigation'
 
 const Navber = () => {
-      const [isDropShow1, setIsDropShow1] = useState(false);
+  const { user, logout } = useAuth();
+  const router = useRouter();
+  const [isDropShow1, setIsDropShow1] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/login');
+  };
   return (
     <div>
       {/* {/*Desktop Menu Start*/} 
@@ -427,7 +436,7 @@ const Navber = () => {
 								<img src="assets/images/profile.png" alt="Image" className="_nav_profile_img"/>
 							</div>
 							<div className="_header_nav_dropdown">
-								<p className="_header_nav_para">Dylan Field</p>
+								<p className="_header_nav_para">{user?.firstName} {user?.lastName}</p>
 								<button id="_profile_drop_show_btn" className="_header_nav_dropdown_btn _dropdown_toggle" type="button">
 									<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" fill="none" viewBox="0 0 10 6">
 										<path fill="#112032" d="M5 5l.354.354L5 5.707l-.354-.353L5 5zm4.354-3.646l-4 4-.708-.708 4-4 .708.708zm-4.708 4l-4-4 .708-.708 4 4-.708.708z" />
@@ -441,7 +450,7 @@ const Navber = () => {
 										<img src="assets/images/profile.png" alt="Image" className="_nav_drop_img"/>
 									</div>
 									<div className="_nav_profile_dropdown_info_txt">
-										<h4 className="_nav_dropdown_title">Dylan Field</h4>
+										<h4 className="_nav_dropdown_title">{user?.firstName} {user?.lastName}</h4>
 										<a href="profile.html" className="_nav_drop_profile">
 											View Profile
 										</a>
@@ -485,7 +494,7 @@ const Navber = () => {
 										</a>
 									</li>
 									<li className="_nav_dropdown_list_item">
-										<a href="#0" className="_nav_dropdown_link">
+										<button onClick={handleLogout} className="_nav_dropdown_link" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left' }}>
 											<div className="_nav_drop_info">
 												<span>
 													<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="none" viewBox="0 0 19 19">
@@ -499,7 +508,7 @@ const Navber = () => {
 													<path fill="#112032" d="M5 5l.354.354L5.707 5l-.353-.354L5 5zM1.354 9.354l4-4-.708-.708-4 4 .708.708zm4-4.708l-4-4-.708.708 4 4 .708-.708z" opacity=".5"/>
 												</svg>												  
 											</button>
-										</a>
+										</button>
 									</li>
 								</ul>
 							</div>
