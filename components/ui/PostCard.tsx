@@ -3,6 +3,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { useGetComments, useGetReplies, useCreateComment } from "@/lib/queries/comment";
+import { useToggleLike } from "@/lib/queries/like";
 export type TPost = {
     id: string;
     createdAt: Date;
@@ -13,6 +14,7 @@ export type TPost = {
     visibility: boolean;
     likeCount: number;
     commentCount: number;
+    isLiked: boolean;
     author: {
         id: string;
         firstName: string;
@@ -34,6 +36,11 @@ const PostCard = ({ post }: PostCardProps) => {
     showComments ? post.id : ""
   );
   const createComment = useCreateComment();
+  const toggleLike = useToggleLike();
+
+  const handleToggleLike = (targetType: "POST" | "COMMENT", targetId: string) => {
+    toggleLike.mutate({ targetType, targetId });
+  };
 
   const toggleReplies = (commentId: string) => {
     setExpandedReplies((prev) => {
@@ -307,7 +314,10 @@ const PostCard = ({ post }: PostCardProps) => {
            
 
             <div className="_feed_inner_timeline_reaction">
-              <button className="_feed_inner_timeline_reaction_emoji _feed_reaction _feed_reaction_active">
+              <button
+                className={`_feed_inner_timeline_reaction_emoji _feed_reaction ${post.isLiked ? '_feed_reaction_active' : ''}`}
+                onClick={() => handleToggleLike("POST", post.id)}
+              >
                 <span className="_feed_inner_timeline_reaction_link">
                   {" "}
                   <span>
@@ -335,7 +345,7 @@ const PostCard = ({ post }: PostCardProps) => {
                         d="M6.333 8.972c.729 0 1.32-.827 1.32-1.847s-.591-1.847-1.32-1.847c-.729 0-1.32.827-1.32 1.847s.591 1.847 1.32 1.847zM12.667 8.972c.729 0 1.32-.827 1.32-1.847s-.591-1.847-1.32-1.847c-.729 0-1.32.827-1.32 1.847s.591 1.847 1.32 1.847z"
                       ></path>
                     </svg>
-                    Haha
+                    Like
                   </span>
                 </span>
               </button>
@@ -529,7 +539,7 @@ const PostCard = ({ post }: PostCardProps) => {
                           <div className="_comment_reply_num">
                             <ul className="_comment_reply_list">
                               <li>
-                                <span>Like.</span>
+                                <span style={{ cursor: 'pointer' }} onClick={() => handleToggleLike("COMMENT", comment.id)}>Like.</span>
                               </li>
                               <li>
                                 <span style={{ cursor: 'pointer' }} onClick={() => toggleReplies(comment.id)}>Reply.</span>
@@ -617,6 +627,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
 const Replies = ({ commentId }: { commentId: string }) => {
   const { data: replies = [] } = useGetReplies(commentId);
+  const toggleLike = useToggleLike();
 
   if (replies.length === 0) return null;
 
@@ -663,7 +674,7 @@ const Replies = ({ commentId }: { commentId: string }) => {
               <div className="_comment_reply">
                 <div className="_comment_reply_num">
                   <ul className="_comment_reply_list">
-                    <li><span>Like.</span></li>
+                    <li><span style={{ cursor: 'pointer' }} onClick={() => toggleLike.mutate({ targetType: "COMMENT", targetId: reply.id })}>Like.</span></li>
                     <li><span>Reply.</span></li>
                     <li><span>Share</span></li>
                     <li><span className="_time_link">{formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true })}</span></li>

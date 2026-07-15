@@ -7,6 +7,7 @@ export type TComment = {
   content: string;
   createdAt: string;
   likeCount: number;
+  isLiked: boolean;
   author: {
     id: string;
     firstName: string;
